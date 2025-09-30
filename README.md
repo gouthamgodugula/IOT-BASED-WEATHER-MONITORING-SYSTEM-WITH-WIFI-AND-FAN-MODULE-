@@ -20,17 +20,17 @@ An I2C LCD provides immediate feedback on the current temperature, fan status, a
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # 🧱 Hardware Components
- Component	Description 
- 
-Microcontroller :	 ESP32 Development Board 
+| **Component**        | **Description**                                                                             |
+| -------------------- | ------------------------------------------------------------------------------------------- |
+| **ESP32**            | A powerful microcontroller with built-in Wi-Fi capability, used for controlling the system. |
+| **DHT22**            | A temperature and humidity sensor used to monitor the environment.                          |
+| **16x2 LCD Display** | A Liquid Crystal Display (LCD) to show the temperature and humidity readings.               |
+| **Red LED**          | A visual indicator to show when the temperature is above a certain threshold (fan ON).      |
+| **Green LED**        | A visual indicator to show when the temperature is within the acceptable range (fan OFF).   |
+| **Resistors**        | Used with the LEDs to limit current and prevent damage.                                     |
+| **Jumper Wires**     | Wires used for connecting components on the breadboard.                                     |
+| **Breadboard**       | A platform for connecting all the components together without soldering.                    |
 
-Sensor : DHT22 Temperature and Humidity Sensor 
-
-Display :	I2C LCD (16x2 or similar) 
-
-Actuators :	1 x Red LED (High-Temp Alert); 1 x Green LED (Fan Status - Fan ON) 
-
-Other :	2 x 330Ω Resistors (for LEDs) 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # 🔌 Circuit Diagram and Wiring
