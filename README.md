@@ -20,13 +20,13 @@ An I2C LCD provides immediate feedback on the current temperature, fan status, a
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # 🧱 Hardware Components
-"""Component	Description
-Microcontroller	ESP32 Development Board
-Sensor	DHT22 Temperature and Humidity Sensor
-Display	I2C LCD (16x2 or similar)
-Actuators	1 x Red LED (High-Temp Alert)
-1 x Green LED (Fan Status - Fan ON)
-Other	2 x 330Ω Resistors (for LEDs)"""
+| Component	|Description |
+-------------------------------------------
+| Microcontroller |	 ESP32 Development Board |
+|Sensor	| DHT22 Temperature and Humidity Sensor |
+|Display |	I2C LCD (16x2 or similar) |
+|Actuators |	1 x Red LED (High-Temp Alert); 1 x Green LED (Fan Status - Fan ON) |
+|Other |	2 x 330Ω Resistors (for LEDs) |
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # 🔌 Circuit Diagram and Wiring
