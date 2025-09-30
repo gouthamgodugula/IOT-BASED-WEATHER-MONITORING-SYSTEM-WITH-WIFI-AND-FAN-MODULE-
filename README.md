@@ -34,14 +34,16 @@ An I2C LCD provides immediate feedback on the current temperature, fan status, a
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # 🔌 Circuit Diagram and Wiring
-Component Pin	ESP32 Pin	Purpose
-
-DHT22 Data	GPIO 4	Temperature/Humidity Data Input
-
-I2C LCD SDA	GPIO 21	I2C Data Line
-
-I2C LCD SCL	GPIO 22	I2C Clock Line
-
-Red LED Anode	GPIO 16	High-Temperature Alert Indicator
-
-Green LED Anode	GPIO 17	Fan Status Indicator
+| **Component**       | **Pin on Component**   | **Connected to (ESP32 Pin)** | **Description**                        |
+| ------------------- | ---------------------- | ---------------------------- | -------------------------------------- |
+| **DHT22 Sensor**    | VCC                    | 3.3V                         | Power supply for the sensor            |
+|                     | GND                    | GND                          | Ground connection                      |
+|                     | Data                   | D4 (GPIO 4)                  | Data pin for temperature/humidity data |
+| **Red LED**         | Anode (+)              | D18 (GPIO 18)                | Turns ON when temperature is high      |
+|                     | Cathode (via resistor) | GND                          | Current-limiting resistor to ground    |
+| **Green LED**       | Anode (+)              | D19 (GPIO 19)                | Turns ON when temperature is normal    |
+|                     | Cathode (via resistor) | GND                          | Current-limiting resistor to ground    |
+| **I2C LCD Display** | GND                    | GND                          | Ground connection                      |
+|                     | VCC                    | 3.3V                         | Power supply                           |
+|                     | SDA                    | D21 (GPIO 21)                | I2C data line                          |
+|                     | SCL                    | D22 (GPIO 22)                | I2C clock line                         |
