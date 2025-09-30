@@ -1,0 +1,121 @@
+#include <WiFi.h>
+#include <HTTPClient.h>
+#include <DHT.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+// ====== DHT22 SETUP ======
+#define DHTPIN 4
+#define DHTTYPE DHT22
+DHT dht(DHTPIN, DHTTYPE);
+// LED pins
+#define FAN_PIN 16
+#define ALERT_PIN 17
+#define STATUS_PIN 5
+
+// LCD setup
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+// ThingSpeak
+String apiKey = "BGYJQ0JMBHKR5IX8";
+
+// Wokwi Wi-Fi credentials
+const char* ssid = "Wokwi-GUEST";
+const char* password = "";
+
+void setup() {
+  Serial.begin(115200);
+  delay(1000);
+
+  pinMode(FAN_PIN, OUTPUT);
+  pinMode(ALERT_PIN, OUTPUT);
+  pinMode(STATUS_PIN, OUTPUT);
+
+  dht.begin();
+
+// LCD init
+  lcd.init();
+  lcd.backlight();
+  lcd.setCursor(0,0);
+  lcd.print("Connecting to WiFi");
+// Connect to Wi-Fi
+ WiFi.begin(ssid, password);
+while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.print("IP Address: ");
+  Serial.println(WiFi.localIP());
+
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("WiFi Connected!");
+  delay(2000);
+}
+
+void loop(){
+float temp = dht.readTemperature();
+
+ if (isnan(temp)) {
+    Serial.println("Failed to read DHT22");
+    return;
+  }
+  Serial.print("Temperature: ");
+  Serial.print(temp);
+  Serial.println(" °C");
+
+ // Control fan and status LEDs
+  if (temp > 30) {
+    digitalWrite(FAN_PIN, HIGH);
+    digitalWrite(STATUS_PIN, HIGH);
+    Serial.println("Fan: ON");
+  } else {
+    digitalWrite(FAN_PIN, LOW);
+    digitalWrite(STATUS_PIN, LOW);
+    Serial.println("Fan: OFF");
+  }
+
+  // Control alert LED
+  if (temp > 50) {
+    digitalWrite(ALERT_PIN, HIGH);
+    Serial.println("ALERT! High Temperature");
+  } else {
+    digitalWrite(ALERT_PIN, LOW);
+  }
+
+ // Update LCD
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Temp: ");
+  lcd.print(temp);
+  lcd.print("C");
+  lcd.setCursor(0, 1);
+  lcd.print("Fan: ");
+  lcd.print(temp > 30 ? "ON " : "OFF");
+ if(temp > 50) {
+    lcd.setCursor(10, 1);
+    lcd.print("ALERT!");
+  }
+ // Send data to ThingSpeak via Wi-Fi
+  HTTPClient http;
+    String url = "http://api.thingspeak.com/update?api_key=" + apiKey+
+                 "&field1=" + String(temp) +
+                 "&field2=" + String(digitalRead(FAN_PIN)) +
+                 "&field3=" + String(digitalRead(ALERT_PIN));
+
+  http.begin(url);
+  int httpCode = http.GET();
+
+ if (httpCode > 0) {
+    Serial.print("HTTP response code: ");
+    Serial.println(httpCode);
+    Serial.println("Data sent to ThingSpeak");
+  } else {
+    Serial.printf("HTTP request failed, error: %s\n", http.errorToString(httpCode).c_str());
+  }  
+
+ http.end();
+  delay(15000);
+}
